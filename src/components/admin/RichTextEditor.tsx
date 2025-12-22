@@ -21,7 +21,6 @@ import {
     FileText
 } from 'lucide-react';
 import { useCallback, useRef, useEffect, useState } from 'react';
-import pb from '@/lib/pocketbase';
 
 interface RichTextEditorProps {
     content: string;
@@ -29,41 +28,49 @@ interface RichTextEditorProps {
     placeholder?: string;
 }
 
-// Extensions를 컴포넌트 외부에서 정의하여 한 번만 생성
-const createExtensions = (placeholder: string) => [
-    StarterKit.configure({
-        heading: {
-            levels: [1, 2, 3],
-        },
-    }),
-    Image.configure({
-        inline: true,
-        allowBase64: true,
-    }),
-    Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-            class: 'text-blue-600 underline',
-        },
-    }),
-    Placeholder.configure({
-        placeholder,
-    }),
-    Underline,
-];
+// 모듈 레벨에서 extensions 한 번만 생성 (HMR에서도 캐시됨)
+let cachedExtensions: ReturnType<typeof createExtensionsOnce> | null = null;
+
+function createExtensionsOnce(placeholder: string) {
+    if (cachedExtensions) return cachedExtensions;
+    
+    cachedExtensions = [
+        StarterKit.configure({
+            heading: {
+                levels: [1, 2, 3],
+            },
+        }),
+        Image.configure({
+            inline: true,
+            allowBase64: true,
+        }),
+        Link.configure({
+            openOnClick: false,
+            HTMLAttributes: {
+                class: 'text-blue-600 underline',
+            },
+        }),
+        Placeholder.configure({
+            placeholder,
+        }),
+        Underline,
+    ];
+    
+    return cachedExtensions;
+}
 
 export function RichTextEditor({ content, onChange, placeholder = '내용을 입력하세요...' }: RichTextEditorProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const imageInputRef = useRef<HTMLInputElement>(null);
     const [isMounted, setIsMounted] = useState(false);
-    const extensionsRef = useRef(createExtensions(placeholder));
+    const extensions = createExtensionsOnce(placeholder);
 
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
     const editor = useEditor({
-        extensions: extensionsRef.current,
+        extensions,
         content,
         onUpdate: ({ editor }) => {
             onChange(editor.getHTML());
