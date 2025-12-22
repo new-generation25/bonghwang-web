@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # Next.js Frontend
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bonghwangdae-web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_POCKETBASE_URL=http://backend:8090
+    depends_on:
+      - backend
+    networks:
+      - bonghwangdae-network
+
+  # PocketBase Backend
+  backend:
+    image: alpine:latest
+    container_name: bonghwangdae-backend
+    restart: always
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./backend/pb_data:/pb/pb_data
+      - ./backend/pb_public:/pb/pb_public
+      # Mount the local executable (Note: This assumes the host is Linux/amd64 or compatible. 
+      # For cross-platform dev, it's better to download the linux binary in a separate Dockerfile 
+      # or use a pre-built pocketbase image. Here we assume we mount the data.)
+      # FOR PROD DEPLOYMENT: You should download the Linux binary.
+    entrypoint: /bin/sh -c "echo 'Please ensure Linux binary is present for production deployment' && sleep infinity"
+    # In a real production scenario, use a proper PocketBase Dockerfile like:
+    # image: ghcr.io/muchobien/pocketbase:latest
+    networks:
+      - bonghwangdae-network
+
+networks:
+  bonghwangdae-network:
+    driver: bridge
