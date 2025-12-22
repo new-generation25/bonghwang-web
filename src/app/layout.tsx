@@ -8,19 +8,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "봉황대협동조합 | Bonghwangdae Cooperative",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://bonghwang-web.vercel.app'),
+  title: {
+    default: "봉황대협동조합",
+    template: "%s | 봉황대협동조합"
+  },
   description: "로컬의 시간을 잇다, 봉황대협동조합. CONNECTING LOCAL TIME, BONGHWANGDAE COOPERATIVE",
+  keywords: ["봉황대협동조합", "Bonghwangdae Cooperative", "협동조합", "지역관광", "김해"],
+  authors: [{ name: "봉황대협동조합" }],
   openGraph: {
-    title: "봉황대협동조합 | Bonghwangdae Cooperative",
+    title: "봉황대협동조합",
     description: "로컬의 시간을 잇다, 봉황대협동조합. CONNECTING LOCAL TIME, BONGHWANGDAE COOPERATIVE",
     type: "website",
     locale: "ko_KR",
     siteName: "봉황대협동조합",
+    url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "봉황대협동조합 | Bonghwangdae Cooperative",
+    title: "봉황대협동조합",
     description: "로컬의 시간을 잇다, 봉황대협동조합. CONNECTING LOCAL TIME, BONGHWANGDAE COOPERATIVE",
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 
