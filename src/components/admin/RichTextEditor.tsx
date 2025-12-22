@@ -1,15 +1,30 @@
 'use client';
 
 import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
+// StarterKit에서 개별 확장을 가져와서 중복 방지
+import Document from '@tiptap/extension-document';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import Bold from '@tiptap/extension-bold';
+import Italic from '@tiptap/extension-italic';
+import Strike from '@tiptap/extension-strike';
+import Heading from '@tiptap/extension-heading';
+import BulletList from '@tiptap/extension-bullet-list';
+import OrderedList from '@tiptap/extension-ordered-list';
+import ListItem from '@tiptap/extension-list-item';
+import Blockquote from '@tiptap/extension-blockquote';
+import Code from '@tiptap/extension-code';
+import CodeBlock from '@tiptap/extension-code-block';
+import HardBreak from '@tiptap/extension-hard-break';
+import History from '@tiptap/extension-history';
 import { Button } from '@/components/ui/button';
 import { 
-    Bold, 
-    Italic, 
+    Bold as BoldIcon, 
+    Italic as ItalicIcon, 
     Underline as UnderlineIcon, 
     Strikethrough,
     List,
@@ -30,11 +45,23 @@ interface RichTextEditorProps {
 
 // 기본 extensions (placeholder 제외)
 const baseExtensions = [
-    StarterKit.configure({
-        heading: {
-            levels: [1, 2, 3],
-        },
+    Document,
+    Paragraph,
+    Text,
+    Bold,
+    Italic,
+    Strike,
+    Heading.configure({
+        levels: [1, 2, 3],
     }),
+    BulletList,
+    OrderedList,
+    ListItem,
+    Blockquote,
+    Code,
+    CodeBlock,
+    HardBreak,
+    History,
     Image.configure({
         inline: true,
         allowBase64: true,
@@ -225,7 +252,7 @@ export function RichTextEditor({ content, onChange, placeholder = '내용을 입
                         size="sm"
                         onClick={() => editor.chain().focus().toggleBold().run()}
                     >
-                        <Bold className="h-4 w-4" />
+                        <BoldIcon className="h-4 w-4" />
                     </Button>
                     <Button
                         type="button"
@@ -233,7 +260,7 @@ export function RichTextEditor({ content, onChange, placeholder = '내용을 입
                         size="sm"
                         onClick={() => editor.chain().focus().toggleItalic().run()}
                     >
-                        <Italic className="h-4 w-4" />
+                        <ItalicIcon className="h-4 w-4" />
                     </Button>
                     <Button
                         type="button"

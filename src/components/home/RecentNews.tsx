@@ -103,11 +103,11 @@ export function RecentNews() {
                                                 {notice.title} - 공지사항 상세 내용
                                             </DialogDescription>
                                         </DialogHeader>
-                                        <div className="mt-4 text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+                                        <div className="mt-4 text-sm text-foreground leading-relaxed">
                                             <p className="font-medium text-xs text-accent mb-4">
                                                 {formatDate(notice.date)}
                                             </p>
-                                            <div dangerouslySetInnerHTML={{ __html: notice.content }} />
+                                            <div className="ProseMirror" dangerouslySetInnerHTML={{ __html: notice.content }} />
                                         </div>
                                     </DialogContent>
                                 </Dialog>
