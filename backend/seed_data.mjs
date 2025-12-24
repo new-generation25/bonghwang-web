@@ -2,7 +2,7 @@ import PocketBase from 'pocketbase';
 const pb = new PocketBase('https://bonghwang-web-production.up.railway.app');
 
 const ADMIN_EMAIL = 'admin@bonghwangdae.com';
-const ADMIN_PASS = 'bonghwangdae1234';
+const ADMIN_PASS = 'bonghwang1935';
 
 async function main() {
     try {

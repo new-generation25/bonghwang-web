@@ -1,31 +1,75 @@
-import PocketBase from 'pocketbase';
-const pb = new PocketBase('https://bonghwang-web-production.up.railway.app');
+/**
+ * PocketBase REST API를 직접 사용하여 데이터 업로드
+ */
 
+const RAILWAY_URL = 'https://bonghwang-web-production.up.railway.app';
 const ADMIN_EMAIL = 'admin@bonghwangdae.com';
 const ADMIN_PASS = 'bonghwang1935';
 
+async function getAdminToken() {
+    const response = await fetch(`${RAILWAY_URL}/api/admins/auth-with-password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            identity: ADMIN_EMAIL,
+            password: ADMIN_PASS,
+        }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`인증 실패: ${error.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.token;
+}
+
+async function createRecord(collection, data, token) {
+    const formData = new FormData();
+    
+    for (const [key, value] of Object.entries(data)) {
+        if (value instanceof File || value instanceof Blob) {
+            formData.append(key, value);
+        } else if (Array.isArray(value) && value[0] instanceof File) {
+            value.forEach(file => formData.append(key, file));
+        } else {
+            formData.append(key, typeof value === 'object' ? JSON.stringify(value) : value);
+        }
+    }
+
+    const response = await fetch(`${RAILWAY_URL}/api/collections/${collection}/records`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`레코드 생성 실패: ${error.message || response.statusText}`);
+    }
+
+    return await response.json();
+}
+
 async function main() {
     try {
-        console.log('🔐 Railway PocketBase 인증 시도 중...');
-        try {
-            await pb.admins.authWithPassword(ADMIN_EMAIL, ADMIN_PASS);
-            console.log('✅ 인증 성공');
-        } catch (authError) {
-            console.error('❌ 인증 실패:', authError.message);
-            console.error('   URL:', authError.url);
-            console.error('   Status:', authError.status);
-            console.error('   Response:', authError.response);
-            throw authError;
-        }
+        console.log('🔐 관리자 토큰 가져오는 중...');
+        const token = await getAdminToken();
+        console.log('✅ 인증 성공\n');
 
+        // 프로젝트 데이터 (seed_projects.mjs에서 가져옴)
         const projects = [
             {
                 title: '김해 DMO X 봉황대협동조합',
                 category: 'DMO',
                 year: 2024,
                 client: '김해시',
-                description: `
-<div style="line-height: 1.6;">
+                description: `<div style="line-height: 1.6;">
 
 <h2 style="font-size: 1.75rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; color: #1a1a1a;">주민과 상인이 주도하는 지속 가능한 원도심 체류형 관광 생태계</h2>
 
@@ -132,8 +176,7 @@ async function main() {
 <p style="margin: 0.25rem 0;"><strong style="color: #64748b;">협력 파트너:</strong> <span style="color: #334155;">55개사 (115% 달성)</span></p>
 </div>
 
-</div>
-                `
+</div>`
             },
             {
                 title: 'Bonghwangdae Festival',
@@ -151,15 +194,73 @@ async function main() {
             }
         ];
 
-        for (const proj of projects) {
-            await pb.collection('projects').create(proj);
-            console.log(`Created project: ${proj.title}`);
+        console.log('📤 프로젝트 업로드 중...');
+        for (const project of projects) {
+            try {
+                await createRecord('projects', project, token);
+                console.log(`   ✅ ${project.title} 업로드 완료`);
+            } catch (e) {
+                console.error(`   ❌ ${project.title} 업로드 실패:`, e.message);
+            }
         }
-        console.log("Projects seeding complete!");
+
+        // 뉴스 게시물
+        const notices = [
+            {
+                title: '2025 봉황대협동조합 정기총회 안내',
+                content: '<p>2025년도 정기총회를 아래와 같이 개최하오니 조합원 여러분의 많은 참석 바랍니다.</p><p><br></p><p><strong>일시:</strong> 2025년 2월 28일 (금) 14:00<br><strong>장소:</strong> 봉황대협동조합 2층 회의실<br><strong>안건:</strong> 2024년 결산 및 2025년 사업계획 승인</p>',
+                is_pinned: true,
+                date: '2025-02-15'
+            },
+            {
+                title: '신규 조합원 모집 공고',
+                content: '<p>봉리단길 활성화를 함께 이끌어갈 신규 조합원을 모집합니다. 자세한 사항은 문의 바랍니다.</p>',
+                is_pinned: false,
+                date: '2025-01-10'
+            },
+            {
+                title: '환경개선 프로젝트 결과 보고',
+                content: '<p>지난 3개월간 진행된 환경개선 프로젝트가 성공적으로 마무리되었습니다.</p>',
+                is_pinned: false,
+                date: '2024-12-20'
+            }
+        ];
+
+        console.log('\n📤 뉴스 게시물 업로드 중...');
+        for (const notice of notices) {
+            try {
+                await createRecord('notices', notice, token);
+                console.log(`   ✅ ${notice.title} 업로드 완료`);
+            } catch (e) {
+                console.error(`   ❌ ${notice.title} 업로드 실패:`, e.message);
+            }
+        }
+
+        // 파트너사
+        const partners = [
+            { name: "Partner A", link: "https://example.com" },
+            { name: "Partner B", link: "" },
+            { name: "Member C", link: "https://example.com" },
+            { name: "Member D", link: "" }
+        ];
+
+        console.log('\n📤 파트너사 업로드 중...');
+        for (const partner of partners) {
+            try {
+                await createRecord('partners', partner, token);
+                console.log(`   ✅ ${partner.name} 업로드 완료`);
+            } catch (e) {
+                console.error(`   ❌ ${partner.name} 업로드 실패:`, e.message);
+            }
+        }
+
+        console.log('\n🎉 모든 데이터 업로드 완료!');
 
     } catch (e) {
-        console.error("Seeding failed:", e);
+        console.error('❌ 업로드 실패:', e.message);
+        console.error(e);
     }
 }
 
 main();
+

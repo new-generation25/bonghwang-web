@@ -1,31 +1,19 @@
-import PocketBase from 'pocketbase';
-const pb = new PocketBase('https://bonghwang-web-production.up.railway.app');
+/**
+ * 이 스크립트는 PocketBase Admin UI를 통해 데이터를 업로드하는 방법을 안내합니다.
+ * 
+ * 1. https://bonghwang-web-production.up.railway.app/_/ 접속
+ * 2. Collections 메뉴에서 각 컬렉션에 데이터 추가
+ * 
+ * 또는 아래 데이터를 복사해서 Admin UI에서 직접 입력하세요.
+ */
 
-const ADMIN_EMAIL = 'admin@bonghwangdae.com';
-const ADMIN_PASS = 'bonghwang1935';
-
-async function main() {
-    try {
-        console.log('🔐 Railway PocketBase 인증 시도 중...');
-        try {
-            await pb.admins.authWithPassword(ADMIN_EMAIL, ADMIN_PASS);
-            console.log('✅ 인증 성공');
-        } catch (authError) {
-            console.error('❌ 인증 실패:', authError.message);
-            console.error('   URL:', authError.url);
-            console.error('   Status:', authError.status);
-            console.error('   Response:', authError.response);
-            throw authError;
-        }
-
-        const projects = [
-            {
-                title: '김해 DMO X 봉황대협동조합',
-                category: 'DMO',
-                year: 2024,
-                client: '김해시',
-                description: `
-<div style="line-height: 1.6;">
+const projects = [
+    {
+        title: '김해 DMO X 봉황대협동조합',
+        category: 'DMO',
+        year: 2024,
+        client: '김해시',
+        description: `<div style="line-height: 1.6;">
 
 <h2 style="font-size: 1.75rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; color: #1a1a1a;">주민과 상인이 주도하는 지속 가능한 원도심 체류형 관광 생태계</h2>
 
@@ -132,34 +120,13 @@ async function main() {
 <p style="margin: 0.25rem 0;"><strong style="color: #64748b;">협력 파트너:</strong> <span style="color: #334155;">55개사 (115% 달성)</span></p>
 </div>
 
-</div>
-                `
-            },
-            {
-                title: 'Bonghwangdae Festival',
-                category: 'Festival',
-                year: 2024,
-                client: 'Gimhae City',
-                description: '<p>A successful local festival bringing together 5000+ visitors.</p>'
-            },
-            {
-                title: 'Local Creator Education',
-                category: 'Education',
-                year: 2024,
-                client: 'Internal',
-                description: '<p>Educating the next generation of local creators.</p>'
-            }
-        ];
-
-        for (const proj of projects) {
-            await pb.collection('projects').create(proj);
-            console.log(`Created project: ${proj.title}`);
-        }
-        console.log("Projects seeding complete!");
-
-    } catch (e) {
-        console.error("Seeding failed:", e);
+</div>`
     }
-}
+];
 
-main();
+console.log('이 스크립트는 데이터를 출력합니다.');
+console.log('PocketBase Admin UI에서 직접 입력하세요:');
+console.log('https://bonghwang-web-production.up.railway.app/_/');
+console.log('\n프로젝트 데이터:');
+console.log(JSON.stringify(projects, null, 2));
+

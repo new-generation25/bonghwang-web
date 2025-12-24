@@ -22,6 +22,12 @@ export default function NoticesPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Ensure PocketBase uses the correct base URL from environment
+        const envUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL;
+        if (envUrl && (pb.baseUrl === 'http://127.0.0.1:8090' || pb.baseUrl === 'http://localhost:8090')) {
+            pb.baseUrl = envUrl;
+        }
+
         const fetchNotices = async () => {
             try {
                 const result = await pb.collection('notices').getList(1, 100, {
