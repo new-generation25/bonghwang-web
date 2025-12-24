@@ -13,18 +13,63 @@ interface ProjectGalleryProps {
 
 export default function ProjectGallery({ images, projectId, projectTitle }: ProjectGalleryProps) {
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
+    const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
 
     // Ensure PocketBase uses the correct base URL from environment
     useEffect(() => {
         const envUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL;
         if (envUrl) {
             // 프로토콜이 없으면 https:// 추가
-            const normalizedUrl = envUrl.startsWith('http://') || envUrl.startsWith('https://') 
-                ? envUrl 
+            const normalizedUrl = envUrl.startsWith('http://') || envUrl.startsWith('https://')
+                ? envUrl
                 : `https://${envUrl}`;
             pb.baseUrl = normalizedUrl;
         }
     }, []);
+
+    // 이미지 프리로딩: 라이트박스가 열릴 때 모든 이미지를 미리 로드
+    useEffect(() => {
+        if (selectedImage !== null && images.length > 0) {
+            // 현재, 이전, 다음 이미지를 우선적으로 로드
+            const imagesToPreload = [
+                images[selectedImage], // 현재 이미지
+                selectedImage > 0 ? images[selectedImage - 1] : null, // 이전 이미지
+                selectedImage < images.length - 1 ? images[selectedImage + 1] : null, // 다음 이미지
+            ].filter(Boolean) as string[];
+
+            // 우선 이미지 로드
+            imagesToPreload.forEach(imageName => {
+                if (!preloadedImages.has(imageName)) {
+                    const img = new Image();
+                    const imageUrl = pb.files.getURL(
+                        { id: projectId, collectionId: 'projects', collectionName: 'projects' },
+                        imageName
+                    );
+                    img.src = imageUrl;
+                    img.onload = () => {
+                        setPreloadedImages(prev => new Set(prev).add(imageName));
+                    };
+                }
+            });
+
+            // 나머지 모든 이미지를 백그라운드에서 로드
+            setTimeout(() => {
+                images.forEach(imageName => {
+                    if (!preloadedImages.has(imageName) && !imagesToPreload.includes(imageName)) {
+                        const img = new Image();
+                        const imageUrl = pb.files.getURL(
+                            { id: projectId, collectionId: 'projects', collectionName: 'projects' },
+                            imageName
+                        );
+                        img.src = imageUrl;
+                        img.onload = () => {
+                            setPreloadedImages(prev => new Set(prev).add(imageName));
+                        };
+                    }
+                });
+            }, 100); // 우선 이미지 로드 후 100ms 대기
+        }
+    }, [selectedImage, images, projectId, preloadedImages]);
 
     // 키보드 이벤트 처리
     useEffect(() => {
@@ -91,8 +136,8 @@ export default function ProjectGallery({ images, projectId, projectTitle }: Proj
                         key={`${projectId}-${image}-${index}`}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ 
-                            duration: 0.6, 
+                        transition={{
+                            duration: 0.6,
                             delay: index * 0.15,
                             ease: [0.22, 1, 0.36, 1]
                         }}
@@ -102,7 +147,7 @@ export default function ProjectGallery({ images, projectId, projectTitle }: Proj
                         <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-2xl transition-shadow duration-300">
                             {/* Overlay on hover */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-                            
+
                             {/* Image */}
                             <motion.img
                                 src={getImageUrl(image)}
@@ -196,7 +241,6 @@ export default function ProjectGallery({ images, projectId, projectTitle }: Proj
 
                         {/* Image */}
                         <motion.div
-                            key={selectedImage}
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
@@ -205,9 +249,11 @@ export default function ProjectGallery({ images, projectId, projectTitle }: Proj
                             onClick={(e) => e.stopPropagation()}
                         >
                             <img
+                                key={selectedImage}  // key는 img에만 유지하여 브라우저 캐시 활용
                                 src={getImageUrl(images[selectedImage])}
                                 alt={`${projectTitle} - Gallery ${selectedImage + 1}`}
-                                className="max-w-full max-h-[90vh] object-contain rounded-lg"
+                                className="max-w-full max-h-[90vh] object-contain rounded-lg transition-opacity duration-200"
+                                style={{ imageRendering: 'auto' }}
                             />
                         </motion.div>
                     </motion.div>
