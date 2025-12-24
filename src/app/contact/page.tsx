@@ -2,7 +2,7 @@ import { ContactForm } from '@/components/contact/ContactForm';
 
 export default function ContactPage() {
     return (
-        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen">
+        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen bg-background text-foreground">
             <div className="container mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
                     <div>

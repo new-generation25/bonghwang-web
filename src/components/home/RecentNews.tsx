@@ -44,19 +44,19 @@ export function RecentNews() {
 
     return (
 
-        <section className="py-24 bg-white text-foreground px-6 md:px-12">
+        <section className="py-24 bg-background text-foreground px-6 md:px-12">
             <div className="container mx-auto">
                 <div className="mb-16">
                     <span className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2 block">Press & News</span>
-                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black">
+                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-foreground" style={{ fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
                         봉황대협동조합의<br />
                         새로운 소식들을 전합니다
                     </h2>
                 </div>
 
-                <div className="w-full border-t border-black/10">
+                <div className="w-full border-t border-border">
                     {/* Header Row - Same structure as data rows for perfect alignment */}
-                    <div className="flex flex-nowrap items-center justify-center py-0 border-b border-black/10 text-[13px] font-bold text-muted-foreground uppercase tracking-wider h-[44px]">
+                    <div className="flex flex-nowrap items-center justify-center py-0 border-b border-border text-[13px] font-bold text-muted-foreground uppercase tracking-wider h-[44px]">
                         <div className="flex-1 pl-2 pr-8">
                             <div className="flex flex-col justify-center items-center text-center h-full">제목</div>
                         </div>
@@ -83,7 +83,7 @@ export function RecentNews() {
                                 <Dialog key={notice.id}>
                                     <DialogTrigger asChild>
                                         <div
-                                            className="group flex items-center justify-between py-6 border-b border-black/5 cursor-pointer hover:bg-white/50 transition-colors h-[44px]"
+                                            className="group flex items-center justify-between py-6 border-b border-border cursor-pointer hover:bg-secondary/50 transition-colors h-[44px]"
                                             onClick={() => setSelectedNotice(notice)}
                                         >
                                             <div className="flex-1 text-[13px] font-medium pl-2 truncate pr-8 text-foreground group-hover:text-accent transition-colors">
@@ -96,7 +96,7 @@ export function RecentNews() {
                                             </div>
                                         </div>
                                     </DialogTrigger>
-                                    <DialogContent className="bg-white border-none shadow-lg sm:max-w-2xl">
+                                    <DialogContent className="bg-background border border-border shadow-lg sm:max-w-2xl" style={{ backgroundColor: 'hsl(var(--background))' }}>
                                         <DialogHeader>
                                             <DialogTitle className="text-xl font-bold mb-2">{notice.title}</DialogTitle>
                                             <DialogDescription className="sr-only">
@@ -117,7 +117,7 @@ export function RecentNews() {
 
                     <div className="flex justify-end mt-8">
                         <Link href="/notices">
-                            <Button variant="link" className="text-muted-foreground hover:text-black p-0 h-auto text-[11px] tracking-wide">
+                            <Button variant="link" className="text-muted-foreground hover:text-foreground p-0 h-auto text-[11px] tracking-wide">
                                 View All &rarr;
                             </Button>
                         </Link>

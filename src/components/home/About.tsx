@@ -2,12 +2,12 @@
 
 export function About() {
     return (
-        <section className="py-24 bg-white text-foreground px-6 md:px-12">
+        <section className="py-24 bg-background text-foreground px-6 md:px-12">
             <div className="container mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div>
                         <span className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2 block">Who We Are</span>
-                        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-8 leading-tight">
+                        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-8 leading-tight" style={{ fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
                             지속 가능한 로컬을 위한<br />
                             <span className="text-muted-foreground">새로운 실험과 도전</span>
                         </h2>

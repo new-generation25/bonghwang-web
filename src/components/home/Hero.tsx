@@ -1,14 +1,48 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 export function Hero() {
+    const [isDark, setIsDark] = useState(false);
+
+    useEffect(() => {
+        // 현재 테마 확인
+        const checkTheme = () => {
+            const html = document.documentElement;
+            setIsDark(html.classList.contains('dark'));
+        };
+
+        checkTheme();
+
+        // 테마 변경 감지
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        // 커스텀 이벤트로도 감지
+        const handleThemeChange = () => checkTheme();
+        window.addEventListener('theme-change', handleThemeChange);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('theme-change', handleThemeChange);
+        };
+    }, []);
+
+    const backgroundImage = isDark ? '/street.JPG' : '/street-noon.jpg';
+
     return (
         <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black text-white">
-            {/* Background Layer - Placeholder for Video/Image */}
-            <div className="absolute inset-0 bg-neutral-900 opacity-80 z-0">
-                {/* TODO: Add video or image here */}
-                <div className="w-full h-full bg-[url('https://placehold.co/1920x1080/1a1a1a/FFF')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+            {/* Background Layer - Hero Image */}
+            <div className="absolute inset-0 z-0">
+                <div 
+                    className="w-full h-full bg-cover bg-center transition-opacity duration-500"
+                    style={{ backgroundImage: `url('${backgroundImage}')` }}
+                ></div>
+                <div className="absolute inset-0 bg-black/60"></div>
             </div>
 
             <div className="relative z-10 text-center px-6">

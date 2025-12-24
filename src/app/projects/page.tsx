@@ -38,7 +38,7 @@ export default function ProjectsPage() {
         : projects.filter(p => p.category === activeCategory);
 
     return (
-        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen">
+        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen bg-background text-foreground">
             <div className="container mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-6">Our Works</h1>

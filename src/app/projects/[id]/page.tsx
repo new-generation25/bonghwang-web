@@ -20,7 +20,7 @@ export default async function ProjectDetail({ params }: { params: { id: string }
 
     if (!project) {
         return (
-            <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen flex flex-col items-center justify-center">
+            <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
                 <h1 className="text-2xl font-bold mb-4">Project Not Found</h1>
                 <Link href="/projects">
                     <Button variant="link">Back to Projects</Button>
@@ -30,7 +30,7 @@ export default async function ProjectDetail({ params }: { params: { id: string }
     }
 
     return (
-        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen">
+        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen bg-background text-foreground">
             <div className="container mx-auto max-w-4xl">
                 <Link href="/projects">
                     <Button variant="link" className="pl-0 mb-8 text-muted-foreground hover:text-foreground">

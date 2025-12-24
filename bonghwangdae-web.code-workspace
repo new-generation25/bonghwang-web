@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "봉황대협동조합",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "project.name": "봉황대협동조합",
+    "project.description": "봉황대협동조합 공식 웹사이트"
+  }
+}

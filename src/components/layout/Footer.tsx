@@ -1,6 +1,6 @@
 export function Footer() {
     return (
-        <footer className="py-12 bg-white text-foreground border-t border-border">
+        <footer className="py-12 bg-background text-foreground border-t border-border">
             <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="text-sm font-medium">
                     © 2025 Bonghwangdae Cooperative. All rights reserved.

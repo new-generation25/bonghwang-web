@@ -25,10 +25,10 @@ export function Partners() {
     }, []);
 
     return (
-        <section className="py-24 bg-white px-6 md:px-12">
+        <section className="py-24 bg-background text-foreground px-6 md:px-12">
             <div className="container mx-auto text-center">
                 <span className="text-accent text-base font-bold tracking-widest uppercase mb-2 block">Network</span>
-                <h2 className="text-3xl font-bold tracking-tight mb-16">Partners & Members</h2>
+                <h2 className="text-3xl font-bold tracking-tight mb-16 text-foreground">Partners & Members</h2>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     {loading ? (
@@ -43,26 +43,27 @@ export function Partners() {
                         <div className="col-span-full text-muted-foreground">등록된 파트너사가 없습니다.</div>
                     ) : (
                         partners.map((partner) => (
-                            <a
+                            <div
                                 key={partner.id}
-                                href={partner.link || '#'}
-                                target={partner.link ? "_blank" : "_self"}
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all opacity-50 hover:opacity-100 duration-300"
+                                className="flex items-center justify-center p-6"
                             >
-                                {partner.logo ? (
+                                {partner.logo || partner.name === 'Partner A' || partner.name === 'Partner B' ? (
                                     // eslint-disable-next-line @next/next/no-img-element
                                     <img
-                                        src={pb.files.getUrl(partner, partner.logo)}
+                                        src={
+                                            partner.name === 'Partner A' ? '/a-1935.png' :
+                                            partner.name === 'Partner B' ? '/미야상회.png' :
+                                            pb.files.getUrl(partner, partner.logo)
+                                        }
                                         alt={partner.name}
-                                        className="max-h-16 w-auto object-contain"
+                                        className="w-[200px] h-[150px] min-h-[150px] object-contain"
                                     />
                                 ) : (
                                     <div className="text-xl font-bold text-foreground/80 border-2 border-border p-4 w-full h-32 flex items-center justify-center rounded-lg bg-secondary/20">
                                         {partner.name}
                                     </div>
                                 )}
-                            </a>
+                            </div>
                         ))
                     )}
                 </div>

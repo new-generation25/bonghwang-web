@@ -2,6 +2,7 @@
   "name": "bonghwangdae-web",
   "version": "0.1.0",
   "private": true,
+  "description": "봉황대협동조합 공식 웹사이트 - 로컬의 시간을 잇다, CONNECTING LOCAL TIME",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

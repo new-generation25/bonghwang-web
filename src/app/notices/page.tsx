@@ -44,7 +44,7 @@ export default function NoticesPage() {
     }, []);
 
     return (
-        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen bg-white">
+        <div className="pt-32 pb-24 px-6 md:px-12 min-h-screen bg-background text-foreground">
             <div className="container mx-auto">
                 {/* 헤더 및 뒤로가기 */}
                 <div className="mb-16">
@@ -55,7 +55,7 @@ export default function NoticesPage() {
                     </Link>
                     <div>
                         <span className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2 block">Press & News</span>
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-foreground">
                             봉황대협동조합의<br />
                             새로운 소식들을 전합니다
                         </h1>
@@ -63,9 +63,9 @@ export default function NoticesPage() {
                 </div>
 
                 {/* 게시판 테이블 */}
-                <div className="w-full border-t border-black/10">
+                <div className="w-full border-t border-border">
                     {/* Header Row */}
-                    <div className="flex flex-nowrap items-center justify-center py-0 border-b border-black/10 text-[11px] font-bold text-muted-foreground uppercase tracking-wider h-[44px]">
+                    <div className="flex flex-nowrap items-center justify-center py-0 border-b border-border text-[11px] font-bold text-muted-foreground uppercase tracking-wider h-[44px]">
                         <div className="flex-1 pl-2 pr-8">
                             <div className="flex flex-col justify-center items-center text-center h-full">제목</div>
                         </div>
@@ -77,13 +77,13 @@ export default function NoticesPage() {
                     {/* List Items */}
                     <div>
                         {loading ? (
-                            <div className="group flex items-center justify-between py-6 border-b border-black/5 h-[44px]">
+                            <div className="group flex items-center justify-between py-6 border-b border-border h-[44px]">
                                 <div className="flex-1 text-[11px] font-medium pl-2 pr-8 text-muted-foreground text-center">
                                     로딩 중...
                                 </div>
                             </div>
                         ) : notices.length === 0 ? (
-                            <div className="group flex items-center justify-between py-6 border-b border-black/5 h-[44px]">
+                            <div className="group flex items-center justify-between py-6 border-b border-border h-[44px]">
                                 <div className="flex-1 text-[11px] font-medium pl-2 truncate pr-8 text-muted-foreground">
                                     등록된 공지사항이 없습니다.
                                 </div>
@@ -98,7 +98,7 @@ export default function NoticesPage() {
                                 <Dialog key={notice.id}>
                                     <DialogTrigger asChild>
                                         <div
-                                            className="group flex items-center justify-between py-6 border-b border-black/5 cursor-pointer hover:bg-white/50 transition-colors h-[44px]"
+                                            className="group flex items-center justify-between py-6 border-b border-border cursor-pointer hover:bg-secondary/50 transition-colors h-[44px]"
                                             onClick={() => setSelectedNotice(notice)}
                                         >
                                             <div className="flex-1 text-[13px] font-medium pl-2 truncate pr-8 text-foreground group-hover:text-accent transition-colors">
@@ -111,7 +111,7 @@ export default function NoticesPage() {
                                             </div>
                                         </div>
                                     </DialogTrigger>
-                                    <DialogContent className="bg-white border-none shadow-lg sm:max-w-2xl">
+                                    <DialogContent className="bg-background border border-border shadow-lg sm:max-w-2xl" style={{ backgroundColor: 'hsl(var(--background))' }}>
                                         <DialogHeader>
                                             <DialogTitle className="text-xl font-bold mb-2">{notice.title}</DialogTitle>
                                             <DialogDescription className="sr-only">
