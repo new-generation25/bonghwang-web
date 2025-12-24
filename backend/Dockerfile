@@ -19,7 +19,14 @@ RUN wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.31/poc
 # Railway automatically sets PORT environment variable
 EXPOSE 8080
 
-# Start PocketBase - Railway will expand $PORT at runtime
-# Use shell form to ensure environment variable expansion
-CMD /app/pocketbase serve --http=0.0.0.0:${PORT:-8080}
+# Create a wrapper script that properly handles PORT
+RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
+    echo 'set -e' >> /app/entrypoint.sh && \
+    echo 'PORT="${PORT:-8080}"' >> /app/entrypoint.sh && \
+    echo 'echo "Starting PocketBase on port $PORT"' >> /app/entrypoint.sh && \
+    echo 'exec /app/pocketbase serve --http=0.0.0.0:"$PORT"' >> /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
+# Use the wrapper script
+ENTRYPOINT ["/app/entrypoint.sh"]
 
