@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 export default function AdminDashboardPage() {
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold">대시보드</h1>
+            <h1 className="text-3xl font-bold text-foreground">대시보드</h1>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {/* 프로젝트 관리 카드 */}
-                <div className="rounded-lg border bg-white p-6 shadow-sm">
-                    <h3 className="mb-4 text-lg font-semibold">프로젝트 관리</h3>
+                <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+                    <h3 className="mb-4 text-lg font-semibold text-card-foreground">프로젝트 관리</h3>
                     <p className="mb-4 text-sm text-muted-foreground">
                         프로젝트를 등록하고 이미지를 업로드합니다.
                     </p>
@@ -18,8 +18,8 @@ export default function AdminDashboardPage() {
                 </div>
 
                 {/* 공지사항 관리 카드 */}
-                <div className="rounded-lg border bg-white p-6 shadow-sm">
-                    <h3 className="mb-4 text-lg font-semibold">공지사항 관리</h3>
+                <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+                    <h3 className="mb-4 text-lg font-semibold text-card-foreground">공지사항 관리</h3>
                     <p className="mb-4 text-sm text-muted-foreground">
                         공지사항을 등록, 수정, 삭제합니다.
                     </p>
@@ -29,8 +29,8 @@ export default function AdminDashboardPage() {
                 </div>
 
                 {/* Placeholder for other features */}
-                <div className="rounded-lg border bg-white p-6 shadow-sm opacity-50 cursor-not-allowed">
-                    <h3 className="mb-4 text-lg font-semibold">회원 관리 (준비중)</h3>
+                <div className="rounded-lg border border-border bg-card p-6 shadow-sm opacity-50 cursor-not-allowed">
+                    <h3 className="mb-4 text-lg font-semibold text-card-foreground">회원 관리 (준비중)</h3>
                     <p className="mb-4 text-sm text-muted-foreground">
                         조합원 정보를 관리합니다.
                     </p>
