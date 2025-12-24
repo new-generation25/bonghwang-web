@@ -54,7 +54,6 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                 </article>
 
                 <section>
-                    <h3 className="text-2xl font-bold mb-8">Gallery</h3>
                     <ProjectGallery
                         images={project.images || []}
                         projectId={project.id}

@@ -119,13 +119,27 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                     console.log('✅ 기존 썸네일 유지:', project.thumbnail);
                 }
 
-                // 갤러리 이미지 처리
+                // 갤러리 이미지 처리: 새 이미지를 기존 이미지에 추가
                 if (images && images.length > 0) {
-                    console.log('⚠️ 경고: 새 이미지를 업로드하면 기존 갤러리가 교체됩니다');
+                    // 기존 이미지가 있으면 먼저 추가 (유지)
+                    if (project?.images && project.images.length > 0) {
+                        console.log('✅ 기존 갤러리 이미지 유지:', project.images.length, '개');
+                        for (let i = 0; i < project.images.length; i++) {
+                            data.append('images', project.images[i]);
+                        }
+                    }
+                    // 새 이미지 추가
+                    console.log('✅ 새 갤러리 이미지 추가:', images.length, '개');
                     for (let i = 0; i < images.length; i++) {
                         data.append('images', images[i]);
                     }
-                    console.log('✅ 갤러리 이미지', images.length, '개 추가됨');
+                    console.log('✅ 총 갤러리 이미지:', (project?.images?.length || 0) + images.length, '개');
+                } else if (project?.images && project.images.length > 0) {
+                    // 새 이미지가 없으면 기존 이미지만 유지
+                    console.log('✅ 기존 갤러리 이미지 유지:', project.images.length, '개');
+                    for (let i = 0; i < project.images.length; i++) {
+                        data.append('images', project.images[i]);
+                    }
                 }
 
                 console.log('🚀 PocketBase 업데이트 시작...');
@@ -393,8 +407,8 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
 
                 <div className="space-y-2">
                     <Label>갤러리 이미지 관리 (최대 10장)</Label>
-                    <p className="text-sm text-orange-600 font-medium bg-orange-50 p-2 rounded border border-orange-200">
-                        ⚠️ 주의: 새 이미지를 업로드하면 기존 갤러리 이미지가 모두 삭제됩니다. 기존 이미지를 유지하려면 "📁 파일관리" 버튼을 사용하세요.
+                    <p className="text-sm text-blue-600 font-medium bg-blue-50 p-2 rounded border border-blue-200">
+                        ℹ️ 새 이미지를 선택하면 기존 이미지에 추가됩니다. 기존 이미지를 삭제하거나 순서를 변경하려면 "📁 파일관리" 버튼을 사용하세요.
                     </p>
                     <div className="flex gap-3">
                         <div className="flex-1">
