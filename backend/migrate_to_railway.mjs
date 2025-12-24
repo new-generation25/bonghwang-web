@@ -4,7 +4,7 @@ const LOCAL_PB = new PocketBase('http://127.0.0.1:8090');
 const RAILWAY_PB = new PocketBase('https://bonghwang-web-production.up.railway.app');
 
 const ADMIN_EMAIL = 'admin@bonghwangdae.com';
-const LOCAL_PASS = 'bonghwangdae1234';
+const LOCAL_PASS = 'bonghwang1935'; // Railway와 동일한 비밀번호 사용
 const RAILWAY_PASS = 'bonghwang1935';
 
 async function main() {
@@ -14,7 +14,20 @@ async function main() {
         console.log('✅ 로컬 인증 성공');
 
         console.log('🔐 Railway PocketBase 인증 중...');
-        await RAILWAY_PB.admins.authWithPassword(ADMIN_EMAIL, RAILWAY_PASS);
+        // Railway는 fetch로 직접 인증
+        const authResponse = await fetch(`${RAILWAY_PB.baseUrl}/api/admins/auth-with-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identity: ADMIN_EMAIL, password: RAILWAY_PASS })
+        });
+
+        if (!authResponse.ok) {
+            const error = await authResponse.json();
+            throw new Error(`Railway 인증 실패: ${error.message || authResponse.statusText}`);
+        }
+
+        const authData = await authResponse.json();
+        RAILWAY_PB.authStore.save(authData.token, authData.admin);
         console.log('✅ Railway 인증 성공\n');
 
         // 1. 프로젝트 마이그레이션

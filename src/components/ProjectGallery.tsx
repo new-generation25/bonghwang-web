@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 import pb from '@/lib/pocketbase';
 
 interface ProjectGalleryProps {
@@ -30,46 +31,27 @@ export default function ProjectGallery({ images, projectId, projectTitle }: Proj
     // 이미지 프리로딩: 라이트박스가 열릴 때 모든 이미지를 미리 로드
     useEffect(() => {
         if (selectedImage !== null && images.length > 0) {
-            // 현재, 이전, 다음 이미지를 우선적으로 로드
-            const imagesToPreload = [
-                images[selectedImage], // 현재 이미지
-                selectedImage > 0 ? images[selectedImage - 1] : null, // 이전 이미지
-                selectedImage < images.length - 1 ? images[selectedImage + 1] : null, // 다음 이미지
-            ].filter(Boolean) as string[];
+            console.log('🖼️ 이미지 프리로딩 시작:', images.length, '개');
 
-            // 우선 이미지 로드
-            imagesToPreload.forEach(imageName => {
-                if (!preloadedImages.has(imageName)) {
-                    const img = new Image();
-                    const imageUrl = pb.files.getURL(
-                        { id: projectId, collectionId: 'projects', collectionName: 'projects' },
-                        imageName
-                    );
-                    img.src = imageUrl;
-                    img.onload = () => {
-                        setPreloadedImages(prev => new Set(prev).add(imageName));
-                    };
-                }
+            images.forEach((imageName, index) => {
+                const img = document.createElement('img');
+                const imageUrl = pb.files.getURL(
+                    { id: projectId, collectionId: 'projects', collectionName: 'projects' },
+                    imageName
+                );
+                img.src = imageUrl;
+
+                img.onload = () => {
+                    console.log(`✅ 이미지 ${index + 1}/${images.length} 로드 완료:`, imageName);
+                    setPreloadedImages(prev => new Set(prev).add(imageName));
+                };
+
+                img.onerror = () => {
+                    console.error(`❌ 이미지 ${index + 1} 로드 실패:`, imageName);
+                };
             });
-
-            // 나머지 모든 이미지를 백그라운드에서 로드
-            setTimeout(() => {
-                images.forEach(imageName => {
-                    if (!preloadedImages.has(imageName) && !imagesToPreload.includes(imageName)) {
-                        const img = new Image();
-                        const imageUrl = pb.files.getURL(
-                            { id: projectId, collectionId: 'projects', collectionName: 'projects' },
-                            imageName
-                        );
-                        img.src = imageUrl;
-                        img.onload = () => {
-                            setPreloadedImages(prev => new Set(prev).add(imageName));
-                        };
-                    }
-                });
-            }, 100); // 우선 이미지 로드 후 100ms 대기
         }
-    }, [selectedImage, images, projectId, preloadedImages]);
+    }, [selectedImage, images, projectId]); // 올바른 의존성 배열
 
     // 키보드 이벤트 처리
     useEffect(() => {
