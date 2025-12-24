@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 
 export default function AdminLoginPage() {
     const router = useRouter();
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -20,11 +19,12 @@ export default function AdminLoginPage() {
         setIsLoading(true);
 
         try {
-            await pb.admins.authWithPassword(email, password);
+            // 고정된 이메일 주소 사용
+            await pb.admins.authWithPassword("admin@bonghwangdae.com", password);
             router.push("/admin/dashboard");
         } catch (err) {
             console.error(err);
-            setError("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
+            setError("비밀번호가 올바르지 않습니다.");
         } finally {
             setIsLoading(false);
         }
@@ -42,25 +42,15 @@ export default function AdminLoginPage() {
 
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div className="space-y-2">
-                        <Label htmlFor="email">이메일</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="admin@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="space-y-2">
                         <Label htmlFor="password">비밀번호</Label>
                         <Input
                             id="password"
                             type="password"
+                            placeholder="비밀번호를 입력하세요"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            autoFocus
                         />
                     </div>
 

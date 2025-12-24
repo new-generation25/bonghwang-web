@@ -6,7 +6,18 @@ export default function AdminDashboardPage() {
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">대시보드</h1>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {/* Quick Actions Card */}
+                {/* 프로젝트 관리 카드 */}
+                <div className="rounded-lg border bg-white p-6 shadow-sm">
+                    <h3 className="mb-4 text-lg font-semibold">프로젝트 관리</h3>
+                    <p className="mb-4 text-sm text-muted-foreground">
+                        프로젝트를 등록하고 이미지를 업로드합니다.
+                    </p>
+                    <Link href="/admin/projects">
+                        <Button className="w-full">프로젝트 바로가기</Button>
+                    </Link>
+                </div>
+
+                {/* 공지사항 관리 카드 */}
                 <div className="rounded-lg border bg-white p-6 shadow-sm">
                     <h3 className="mb-4 text-lg font-semibold">공지사항 관리</h3>
                     <p className="mb-4 text-sm text-muted-foreground">

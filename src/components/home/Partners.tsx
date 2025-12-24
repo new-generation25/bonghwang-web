@@ -42,21 +42,21 @@ export function Partners() {
                     ) : partners.length === 0 ? (
                         <div className="col-span-full text-muted-foreground">등록된 파트너사가 없습니다.</div>
                     ) : (
-                        partners.map((partner) => (
+                        partners.map((partner, index) => (
                             <div
                                 key={partner.id}
-                                className="flex items-center justify-center p-6"
+                                className="flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all opacity-50 hover:opacity-100 duration-300"
                             >
-                                {partner.logo || partner.name === 'Partner A' || partner.name === 'Partner B' ? (
+                                {partner.logo ? (
                                     // eslint-disable-next-line @next/next/no-img-element
                                     <img
                                         src={
-                                            partner.name === 'Partner A' ? '/a-1935.png' :
-                                            partner.name === 'Partner B' ? '/미야상회.png' :
+                                            index === 0 ? '/bonghwang1935.png' :
+                                            index === 1 ? '/미야상회.png' :
                                             pb.files.getUrl(partner, partner.logo)
                                         }
                                         alt={partner.name}
-                                        className="w-[200px] h-[150px] min-h-[150px] object-contain"
+                                        className="w-[200px] h-[200px] min-h-[200px] object-contain"
                                     />
                                 ) : (
                                     <div className="text-xl font-bold text-foreground/80 border-2 border-border p-4 w-full h-32 flex items-center justify-center rounded-lg bg-secondary/20">

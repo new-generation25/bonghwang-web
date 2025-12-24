@@ -66,6 +66,12 @@ export default function AdminLayout({
                                 대시보드
                             </Link>
                             <Link
+                                href="/admin/projects"
+                                className="text-sm font-medium hover:text-primary transition-colors"
+                            >
+                                프로젝트 관리
+                            </Link>
+                            <Link
                                 href="/admin/notices"
                                 className="text-sm font-medium hover:text-primary transition-colors"
                             >

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import pb from '@/lib/pocketbase';
+import ProjectGallery from '@/components/ProjectGallery';
 
 // Force dynamic rendering as we are fetching data based on ID
 export const dynamic = 'force-dynamic';
@@ -15,8 +16,9 @@ async function getProject(id: string) {
     }
 }
 
-export default async function ProjectDetail({ params }: { params: { id: string } }) {
-    const project = await getProject(params.id);
+export default async function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const project = await getProject(id);
 
     if (!project) {
         return (
@@ -45,17 +47,6 @@ export default async function ProjectDetail({ params }: { params: { id: string }
                         <span>{project.year}</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-8">{project.title}</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-y border-border py-8">
-                        <div>
-                            <span className="block text-sm text-muted-foreground mb-1">Client</span>
-                            <span className="font-medium">{project.client}</span>
-                        </div>
-                        {/* Role field is not in schema but requested in design. We can add it later or omit. */}
-                        {/* <div>
-                <span className="block text-sm text-muted-foreground mb-1">Role</span>
-                <span className="font-medium">Planning, Design, Operation</span>
-             </div> */}
-                    </div>
                 </header>
 
                 <article className="prose dark:prose-invert max-w-none mb-16">
@@ -64,22 +55,11 @@ export default async function ProjectDetail({ params }: { params: { id: string }
 
                 <section>
                     <h3 className="text-2xl font-bold mb-8">Gallery</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {project.images && project.images.map((image: string, index: number) => (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                                key={index}
-                                src={pb.files.getUrl(project, image)}
-                                alt={`Gallery ${index + 1}`}
-                                className="w-full h-auto rounded-lg object-cover aspect-video bg-secondary/20"
-                            />
-                        ))}
-                        {(!project.images || project.images.length === 0) && (
-                            <div className="col-span-full py-12 text-center text-muted-foreground bg-secondary/20 rounded-lg">
-                                No images available
-                            </div>
-                        )}
-                    </div>
+                    <ProjectGallery
+                        images={project.images || []}
+                        projectId={project.id}
+                        projectTitle={project.title}
+                    />
                 </section>
             </div>
         </div>
