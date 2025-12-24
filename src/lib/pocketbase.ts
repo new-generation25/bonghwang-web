@@ -1,22 +1,32 @@
 import PocketBase from 'pocketbase';
 
-// 클라이언트 사이드에서 환경 변수 확인
+// 환경 변수에서 baseUrl 가져오기 및 정규화
 const getBaseUrl = () => {
-    if (typeof window !== 'undefined') {
-        // 클라이언트 사이드: 런타임에 환경 변수 확인
-        return process.env.NEXT_PUBLIC_POCKETBASE_URL || 'http://127.0.0.1:8090';
+    const envUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL;
+    
+    if (!envUrl) {
+        return 'http://127.0.0.1:8090';
     }
-    // 서버 사이드: 빌드 타임 환경 변수 사용
-    return process.env.NEXT_PUBLIC_POCKETBASE_URL || 'http://127.0.0.1:8090';
+    
+    // 프로토콜이 없으면 https:// 추가
+    if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
+        return `https://${envUrl}`;
+    }
+    
+    return envUrl;
 };
 
 const pb = new PocketBase(getBaseUrl());
 
-// 클라이언트 사이드에서 baseUrl 동적 설정
+// 클라이언트 사이드에서 baseUrl 확실하게 설정
 if (typeof window !== 'undefined') {
     const envUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL;
     if (envUrl) {
-        pb.baseUrl = envUrl;
+        // 프로토콜이 없으면 https:// 추가
+        const normalizedUrl = envUrl.startsWith('http://') || envUrl.startsWith('https://') 
+            ? envUrl 
+            : `https://${envUrl}`;
+        pb.baseUrl = normalizedUrl;
     }
 }
 
