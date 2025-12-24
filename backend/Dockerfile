@@ -15,6 +15,13 @@ RUN wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.31/poc
     rm pocketbase_0.22.31_linux_amd64.zip && \
     chmod +x /app/pocketbase
 
+# Create pb_data directory for persistent storage
+RUN mkdir -p /app/pb_data
+
+# Declare volume for persistent data storage
+# This ensures pb_data survives container restarts and redeployments
+VOLUME ["/app/pb_data"]
+
 # Expose port (Railway will set this dynamically)
 # Railway automatically sets PORT environment variable
 EXPOSE 8080
