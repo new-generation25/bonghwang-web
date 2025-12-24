@@ -46,7 +46,7 @@ export default function AdminProjectsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <p>로딩 중...</p>
+                <p className="text-foreground">로딩 중...</p>
             </div>
         );
     }
@@ -54,26 +54,26 @@ export default function AdminProjectsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold">프로젝트 관리</h1>
+                <h1 className="text-3xl font-bold text-foreground">프로젝트 관리</h1>
                 <Link href="/admin/projects/new">
                     <Button>새 프로젝트 등록</Button>
                 </Link>
             </div>
 
-            <div className="rounded-lg border bg-white shadow-sm">
+            <div className="rounded-lg border border-border bg-card shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full">
-                        <thead className="border-b bg-muted/50">
+                        <thead className="border-b border-border bg-muted/50">
                             <tr>
-                                <th className="px-4 py-3 text-left text-sm font-medium">제목</th>
-                                <th className="px-4 py-3 text-left text-sm font-medium">카테고리</th>
-                                <th className="px-4 py-3 text-left text-sm font-medium">연도</th>
-                                <th className="px-4 py-3 text-left text-sm font-medium">클라이언트</th>
-                                <th className="px-4 py-3 text-left text-sm font-medium">이미지</th>
-                                <th className="px-4 py-3 text-right text-sm font-medium">관리</th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-foreground">제목</th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-foreground">카테고리</th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-foreground">연도</th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-foreground">클라이언트</th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-foreground">이미지</th>
+                                <th className="px-4 py-3 text-right text-sm font-medium text-foreground">관리</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y">
+                        <tbody className="divide-y divide-border">
                             {projects.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
@@ -84,26 +84,26 @@ export default function AdminProjectsPage() {
                                 projects.map((project) => (
                                     <tr key={project.id} className="hover:bg-muted/50">
                                         <td className="px-4 py-3">
-                                            <div className="font-medium">{project.title}</div>
+                                            <div className="font-medium text-foreground">{project.title}</div>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                                            <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-medium text-blue-400">
                                                 {project.category}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-3 text-sm">{project.year}</td>
-                                        <td className="px-4 py-3 text-sm">{project.client}</td>
+                                        <td className="px-4 py-3 text-sm text-foreground">{project.year}</td>
+                                        <td className="px-4 py-3 text-sm text-foreground">{project.client}</td>
                                         <td className="px-4 py-3 text-sm">
                                             {project.thumbnail && (
-                                                <span className="text-green-600">썸네일 ✓</span>
+                                                <span className="text-green-400">썸네일 ✓</span>
                                             )}
                                             {project.images && project.images.length > 0 && (
-                                                <span className="ml-2 text-blue-600">
+                                                <span className="ml-2 text-blue-400">
                                                     갤러리 {project.images.length}장
                                                 </span>
                                             )}
                                             {!project.thumbnail && (!project.images || project.images.length === 0) && (
-                                                <span className="text-gray-400">없음</span>
+                                                <span className="text-muted-foreground">없음</span>
                                             )}
                                         </td>
                                         <td className="px-4 py-3 text-right">
@@ -117,7 +117,7 @@ export default function AdminProjectsPage() {
                                                     variant="outline"
                                                     size="sm"
                                                     onClick={() => handleDelete(project.id, project.title)}
-                                                    className="text-red-600 hover:text-red-700"
+                                                    className="text-red-400 hover:text-red-300"
                                                 >
                                                     삭제
                                                 </Button>

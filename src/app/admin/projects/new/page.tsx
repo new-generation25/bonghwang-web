@@ -95,13 +95,13 @@ export default function NewProjectPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold">새 프로젝트 등록</h1>
+                <h1 className="text-3xl font-bold text-foreground">새 프로젝트 등록</h1>
                 <Link href="/admin/projects">
                     <Button variant="outline">목록으로</Button>
                 </Link>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border bg-white p-6 shadow-sm">
+            <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border border-border bg-card p-6 shadow-sm">
                 <div className="space-y-2">
                     <Label htmlFor="title">프로젝트 제목 *</Label>
                     <Input
@@ -220,7 +220,7 @@ export default function NewProjectPage() {
                         {loading ? '📝 등록 중...' : '📝 프로젝트 등록'}
                     </Button>
                     <Link href="/admin/projects">
-                        <Button type="button" variant="outline" size="lg" className="!text-gray-700 !font-medium px-8">
+                        <Button type="button" variant="outline" size="lg" className="!text-foreground !font-medium px-8">
                             취소
                         </Button>
                     </Link>

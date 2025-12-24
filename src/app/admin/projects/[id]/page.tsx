@@ -276,13 +276,13 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold">프로젝트 수정</h1>
+                <h1 className="text-3xl font-bold text-foreground">프로젝트 수정</h1>
                 <Link href="/admin/projects">
                     <Button variant="outline">목록으로</Button>
                 </Link>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border bg-white p-6 shadow-sm">
+            <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border border-border bg-card p-6 shadow-sm">
                 <div className="space-y-2">
                     <Label htmlFor="title">프로젝트 제목 *</Label>
                     <Input
@@ -395,7 +395,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                                         variant="outline"
                                         size="sm"
                                         onClick={() => handleDeleteImage('images', index)}
-                                        className="absolute top-2 right-2 text-red-600 bg-white"
+                                        className="absolute top-2 right-2 text-red-400 bg-card"
                                     >
                                         삭제
                                     </Button>
@@ -467,7 +467,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                         {saving ? '💾 저장 중...' : '💾 변경사항 저장'}
                     </Button>
                     <Link href="/admin/projects">
-                        <Button type="button" variant="outline" size="lg" className="!text-gray-700 !font-medium px-8">
+                        <Button type="button" variant="outline" size="lg" className="!text-foreground !font-medium px-8">
                             취소
                         </Button>
                     </Link>
@@ -477,9 +477,9 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
             {/* 파일 관리 모달 (File Manager Modal) */}
             {showImageManager && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
+                    <div className="bg-card border border-border rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-2xl font-bold">갤러리 이미지 순서 관리</h2>
+                            <h2 className="text-2xl font-bold text-card-foreground">갤러리 이미지 순서 관리</h2>
                             <Button
                                 type="button"
                                 variant="outline"
@@ -494,8 +494,8 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                         ) : (
                             <div className="space-y-4">
                                 {managedImages.map((image, index) => (
-                                    <div key={index} className="flex items-center gap-4 p-4 border rounded-lg bg-gray-50">
-                                        <div className="text-lg font-semibold text-gray-600 w-8">
+                                    <div key={index} className="flex items-center gap-4 p-4 border border-border rounded-lg bg-muted/30">
+                                        <div className="text-lg font-semibold text-muted-foreground w-8">
                                             {index + 1}
                                         </div>
                                         <img
@@ -503,7 +503,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                                             alt={`Gallery ${index + 1}`}
                                             className="w-32 h-20 object-cover rounded"
                                         />
-                                        <div className="flex-1 text-sm text-gray-600 truncate">
+                                        <div className="flex-1 text-sm text-muted-foreground truncate">
                                             {image}
                                         </div>
                                         <div className="flex gap-2">
@@ -513,7 +513,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                                                 variant="outline"
                                                 onClick={() => moveImageUp(index)}
                                                 disabled={index === 0}
-                                                className="!border-blue-600 !text-blue-600 hover:!bg-blue-50"
+                                                className="!border-blue-400 !text-blue-400 hover:!bg-blue-500/20"
                                             >
                                                 ↑ 위로
                                             </Button>
@@ -523,7 +523,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                                                 variant="outline"
                                                 onClick={() => moveImageDown(index)}
                                                 disabled={index === managedImages.length - 1}
-                                                className="!border-blue-600 !text-blue-600 hover:!bg-blue-50"
+                                                className="!border-blue-400 !text-blue-400 hover:!bg-blue-500/20"
                                             >
                                                 ↓ 아래로
                                             </Button>
@@ -533,12 +533,12 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                             </div>
                         )}
 
-                        <div className="flex justify-end gap-3 mt-6 pt-6 border-t">
+                        <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-border">
                             <Button
                                 type="button"
                                 variant="outline"
                                 onClick={() => setShowImageManager(false)}
-                                className="!text-gray-600"
+                                className="!text-foreground"
                             >
                                 취소
                             </Button>
