@@ -65,7 +65,7 @@ export default function ProjectsPage() {
                                     category: project.category,
                                     year: project.year,
                                     // Use getUrl to generate full URL for the thumbnail
-                                    thumbnail: project.thumbnail ? pb.files.getUrl(project, project.thumbnail) : undefined
+                                    thumbnail: project.thumbnail ? pb.files.getURL(project, project.thumbnail) : undefined
                                 }} />
                             ))}
                         </AnimatePresence>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import pb from '@/lib/pocketbase';
 
 interface ProjectGalleryProps {
     images: string[];
@@ -66,8 +67,7 @@ export default function ProjectGallery({ images, projectId, projectTitle }: Proj
     }
 
     const getImageUrl = (filename: string) => {
-        const baseUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL || 'http://127.0.0.1:8090';
-        return `${baseUrl}/api/files/projects/${projectId}/${filename}`;
+        return pb.files.getURL({ id: projectId, collectionId: 'projects', collectionName: 'projects' }, filename);
     };
 
     return (

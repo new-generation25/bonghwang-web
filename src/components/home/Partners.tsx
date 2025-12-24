@@ -53,7 +53,7 @@ export function Partners() {
                                         src={
                                             index === 0 ? '/bonghwang1935.png' :
                                             index === 1 ? '/미야상회.png' :
-                                            pb.files.getUrl(partner, partner.logo)
+                                            pb.files.getURL(partner, partner.logo)
                                         }
                                         alt={partner.name}
                                         className="w-[200px] h-[200px] min-h-[200px] object-contain"
